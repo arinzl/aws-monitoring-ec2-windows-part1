@@ -1,0 +1,84 @@
+{
+        "logs": {
+                "logs_collected": {
+                        "files": {
+                                "collect_list": [
+                                        {
+                                                "file_path": "C:\\inetpub\\logs\\LogFiles\\W3SVC1\\*.log",
+                                                "log_group_name": "/demo-monitoring-iis-logs",
+                                                "log_stream_name": "{instance_id}",
+                                                "retention_in_days": 3
+                                        }
+                                ]
+                        },
+                        "windows_events": {
+                                "collect_list": [
+                                        {
+                                                "event_format": "text",
+                                                "event_levels": [
+                                                        "VERBOSE",
+                                                        "INFORMATION",
+                                                        "WARNING",
+                                                        "ERROR",
+                                                        "CRITICAL"
+                                                ],
+                                                "event_name": "application",
+                                                "log_group_name": "/demo-monitoring-application-logs",
+                                                "log_stream_name": "{instance_id}",
+                                                "retention_in_days": 7
+                                        }
+                                ]
+                        }
+                }
+        },
+
+        "metrics": {
+                "namespace": "demo-monitoring",
+                "aggregation_dimensions": [
+                        [
+                                "InstanceId"
+                        ]
+                ],
+                "append_dimensions": {
+                        "InstanceId": "${aws:InstanceId}"
+                },
+                "metrics_collected": {
+                        "LogicalDisk": {
+                                "measurement": [
+                                        "% Free Space"
+                                ],
+                                "metrics_collection_interval": 60,
+                                "resources": [
+                                        "*"
+                                ]
+                        },
+                        "Memory": {
+                                "measurement": [
+                                        "Available Mbytes"
+                                ],
+                                "metrics_collection_interval": 60
+                        },
+                        "Processor": {
+                                "measurement": [
+                                        "% Processor Time"
+                                ],
+                                "metrics_collection_interval": 60,
+                                "resources": [
+                                        "_Total"
+                                ]
+                        },
+                        "procstat" : [
+                                {
+                                        "exe" : "spoolsv",
+                                        "measurement" : [
+                                                "memory_rss",
+                                                "memory_vms",
+                                                "cpu_time_system",
+                                                "cpu_time_user"
+                                        ]
+                                }
+
+                        ]
+                }
+        }
+}
